@@ -107,31 +107,36 @@ namespace ProjectMenager.Classes
             }
             return status;
         }
-
-        public static void DeleteProject(Dictionary<Project, List<Task>> projectTasks)
+        public static Project ChooseProject(Dictionary<Project, List<Task>> projectTasks)
         {
             var isFoundedProject = false;
+            Project foundedProject;
             do
             {
                 Console.Clear();
                 Console.WriteLine("Popis projekata...\n");
                 foreach (var project in projectTasks)
                     Console.WriteLine($"- {project.Key.Name}");
-                Console.Write("Odaberite koji projekt zelite obrisati: ");
+                Console.Write("Odaberite koji projekt: ");
                 var selectedProject = Console.ReadLine().Trim();
-                var foundedProject = projectTasks.Keys.FirstOrDefault(p => p.Name.ToLower() == selectedProject.ToLower());
+                foundedProject = projectTasks.Keys.FirstOrDefault(p => p.Name.ToLower() == selectedProject.ToLower());
                 if (foundedProject == null)
                 {
                     Console.WriteLine("Ne postoji project sa tim imenom. Pokusajte ponovno!");
                     Console.ReadKey();
                     continue;
                 }
-                isFoundedProject = true;
-                projectTasks.Remove(foundedProject);
-                Console.WriteLine($"Uspjesno ste obrisali projekt {foundedProject.Name}.");
+                isFoundedProject = true;                
             } while (!isFoundedProject);
+            Console.WriteLine($"Uspjesno ste obrisali projekt {foundedProject.Name}.");
+            return foundedProject;
         }
+        public static void DeleteProject(Dictionary<Project, List<Task>> projectTasks)
+        {
+            var foundedProject = ChooseProject(projectTasks);
+            projectTasks.Remove(foundedProject);
 
+        }
         public static void FilterProjectsByStatus(Dictionary<Project, List<Task>> projectTasks)
         {
             ProjectStatus status = GetValidStatus();
@@ -143,7 +148,57 @@ namespace ProjectMenager.Classes
             }
         }
 
-
-
+        private static void DisplayTasksInProject(Dictionary<Project, List<Task>> projectTasks, Project project)
+        {
+            Console.Clear();
+            var tasks = projectTasks[project];
+            if (tasks.Any())
+            {
+                Console.WriteLine($"Popis zadataka za projekt {project.Name}:\n");
+                foreach (var task in tasks)                
+                    Console.WriteLine($"- {task.Name} (Status: {task.Status}, Rok: {task.DueDate.ToString("dd/MM/yyyy")})"); 
+                //za commit samo napravljen menu za manage project i napravljena prva tocka
+            }
+        }
+        public static void ManageProject(Dictionary<Project, List<Task>> projectTasks, Project project)
+        {
+            Console.Clear();
+            Console.WriteLine($"Upravljanje projektom {project.Name}:");
+            Console.WriteLine("1. Ispis svih zadataka unutar odabranog projekta");
+            Console.WriteLine("2. Prikaz detalja odabranog projekta");
+            Console.WriteLine("3. Uređivanje statusa projekta");
+            Console.WriteLine("4. Dodavanje zadatka unutar projekta");
+            Console.WriteLine("5. Brisanje zadatka iz projekta");
+            Console.WriteLine("6. Prikaz ukupno očekivanog vremena potrebnog za sve aktivne zadatke u projektu");
+            Console.WriteLine("7. Izlaz");
+            Console.Write("Odaberite opciju: ");
+            var choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    DisplayTasksInProject(projectTasks,project);
+                    break;
+                case "2":
+                    //DisplayProjectDetails(project);
+                    break;
+                case "3":
+                    //EditProjectStatus(project);
+                    break;
+                case "4":
+                    //AddTaskToProject(project);
+                    break;
+                case "5":
+                    //DeleteTaskFromProject(project);
+                    break;
+                case "6":
+                    //DisplayActiveTasksTime(project);
+                    break;
+                case "7":
+                    return;
+                default:
+                    Console.WriteLine("Nepostojeća opcija. Molimo odaberite ponovo.");
+                    break;
+            }
+        }
     }
 }

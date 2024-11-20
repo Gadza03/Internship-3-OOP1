@@ -182,7 +182,8 @@ namespace ProjectMenager
                         ProjectLogic.FilterProjectsByStatus(projectTasks);
                         break;
                     case "6":
-                        //ManageSpecificProject(projectTasks);
+                        var selectedProject = ProjectLogic.ChooseProject(projectTasks);
+                        ProjectLogic.ManageProject(projectTasks,selectedProject);
                         break;
                     case "7":
                         //ManageSpecificTask(projectTasks);
@@ -190,7 +191,7 @@ namespace ProjectMenager
                     case "0":                                  
                         return;                        
                     default:
-                        Console.WriteLine("Invalid choice. Please select a valid option.");
+                        Console.WriteLine("Neispravan unos. Pokusajte ponovno!");
                         break;
                 }
                 Console.ReadKey();
