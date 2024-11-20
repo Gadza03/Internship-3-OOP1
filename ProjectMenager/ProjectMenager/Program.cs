@@ -157,7 +157,7 @@ namespace ProjectMenager
                 Console.WriteLine("2. Dodavanje novog projekta");
                 Console.WriteLine("3. Brisanje projekta");
                 Console.WriteLine("4. Prikaz zadataka koji su due u sljedećih 7 dana");
-                Console.WriteLine("5. Prikaz projekata filtriranih po statusu (Aktivni, Završeni, Na čekanju)");
+                Console.WriteLine("5. Prikaz projekata filtriranih po statusu");
                 Console.WriteLine("6. Upravljanje određenim projektom");
                 Console.WriteLine("7. Upravljanje određenim zadatkom");
                 Console.WriteLine("0. Izlaz");
@@ -173,13 +173,13 @@ namespace ProjectMenager
                         ProjectLogic.AddNewProject(projectTasks);
                         break;
                     case "3":
-                        //DeleteProject(projectTasks);
+                        ProjectLogic.DeleteProject(projectTasks);
                         break;
                     case "4":
                         ProjectLogic.ShowTasksDueInNext7Days(projectTasks);
                         break;
                     case "5":
-                        //FilterProjectsByStatus(projectTasks);
+                        ProjectLogic.FilterProjectsByStatus(projectTasks);
                         break;
                     case "6":
                         //ManageSpecificProject(projectTasks);

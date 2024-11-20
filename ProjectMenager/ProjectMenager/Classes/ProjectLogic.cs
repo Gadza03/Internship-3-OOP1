@@ -98,7 +98,7 @@ namespace ProjectMenager.Classes
             while (true)
             {
                 Console.Clear();
-                Console.Write("Unesite status projekta:\n0 - Aktivno\n1 - Na čekanju\n2 - Završen\n ");
+                Console.Write("Unesite status projekta:\n0 - Aktivno\n1 - Na čekanju\n2 - Završen\n");
                 if (Enum.TryParse(Console.ReadLine(), out status) && Enum.IsDefined(typeof(ProjectStatus), status))               
                     break;
                 
@@ -107,6 +107,43 @@ namespace ProjectMenager.Classes
             }
             return status;
         }
+
+        public static void DeleteProject(Dictionary<Project, List<Task>> projectTasks)
+        {
+            var isFoundedProject = false;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Popis projekata...\n");
+                foreach (var project in projectTasks)
+                    Console.WriteLine($"- {project.Key.Name}");
+                Console.Write("Odaberite koji projekt zelite obrisati: ");
+                var selectedProject = Console.ReadLine().Trim();
+                var foundedProject = projectTasks.Keys.FirstOrDefault(p => p.Name.ToLower() == selectedProject.ToLower());
+                if (foundedProject == null)
+                {
+                    Console.WriteLine("Ne postoji project sa tim imenom. Pokusajte ponovno!");
+                    Console.ReadKey();
+                    continue;
+                }
+                isFoundedProject = true;
+                projectTasks.Remove(foundedProject);
+                Console.WriteLine($"Uspjesno ste obrisali projekt {foundedProject.Name}.");
+            } while (!isFoundedProject);
+        }
+
+        public static void FilterProjectsByStatus(Dictionary<Project, List<Task>> projectTasks)
+        {
+            ProjectStatus status = GetValidStatus();
+            Console.Clear();
+            foreach (var project in projectTasks)
+            {
+                if (project.Key.Status == status)
+                    Console.WriteLine($"Naziv: {project.Key.Name} - Status: {project.Key.Status.ToString()}");
+            }
+        }
+
+
 
     }
 }
