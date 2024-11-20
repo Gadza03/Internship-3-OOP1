@@ -12,7 +12,7 @@ namespace ProjectMenager.Classes
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime EndDate { get; set; }
         public ProjectStatus Status { get; set; }
         
         public Project(string name, string desctiption, DateTime start, DateTime end, ProjectStatus status)
@@ -21,7 +21,7 @@ namespace ProjectMenager.Classes
             this.Name = name;
             this.Description = desctiption;
             this.StartDate = start;
-            this.EndTime = end;
+            this.EndDate = end;
             this.Status = status;
         }
         public Guid GetId()
