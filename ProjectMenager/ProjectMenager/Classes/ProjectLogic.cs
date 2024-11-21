@@ -256,6 +256,21 @@ namespace ProjectMenager.Classes
             }
             return status;
         }
+        private static Priority GetValidPriority()
+        {
+            Priority status;
+            while (true)
+            {
+                Console.Clear();
+                Console.Write($"Unesite važnost projekta:\n0 - Viskoa\n1 - Srednja\n2 - Niska\n");
+                if (Enum.TryParse(Console.ReadLine(), out status) && Enum.IsDefined(typeof(Priority), status))
+                    break;
+
+                Console.WriteLine("Neispravan status! Pokušajte ponovo.");
+                Console.ReadKey();
+            }
+            return status;
+        }
         private static int GetExpectedDuration()
         {
             var expectedDuration = 0;
@@ -288,8 +303,9 @@ namespace ProjectMenager.Classes
             var taskStatus = GetValidTaskStatus();
             var taskExpectedDuration = GetExpectedDuration();
             var associatedProjectId = project.GetId();
+            var taskPriority = GetValidPriority();
 
-            var newTask = new Task(taskName, taskDescription, taskDueDate, taskStatus, taskExpectedDuration, associatedProjectId);
+            var newTask = new Task(taskName, taskDescription, taskDueDate, taskStatus, taskExpectedDuration, associatedProjectId,taskPriority);
             projectTasks[project].Add(newTask);
             Console.WriteLine($"Uspješno ste dodali zadatak {taskName} u projekt {project.Name}.");
 

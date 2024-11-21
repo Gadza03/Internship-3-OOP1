@@ -29,6 +29,7 @@ namespace ProjectMenager
                 Console.WriteLine("5. Prikaz projekata filtriranih po statusu");
                 Console.WriteLine("6. Upravljanje određenim projektom");
                 Console.WriteLine("7. Upravljanje određenim zadatkom");
+                Console.WriteLine("8. Bonus zadaci");
                 Console.WriteLine("0. Izlaz");
 
                 var choice = Console.ReadLine();
@@ -57,6 +58,9 @@ namespace ProjectMenager
                     case "7":
                         var selectedTask = TaskLogic.ChooseTask(projectTasks);
                         TaskLogic.ManageSpecificTask(projectTasks, selectedTask);
+                        break;
+                    case "8":
+                        TaskLogic.BonusMenu(projectTasks);
                         break;
                     case "0":
                         return;
@@ -108,14 +112,15 @@ namespace ProjectMenager
                 new DateTime(2025, 3, 10),
                 ProjectStatus.Pending
             );
-
+            //tasks
             var task1 = new Task(
                 "Design Mockups",
                 "Create design mockups for the new website.",
                 project1.StartDate.AddDays(5),
                 StatusTask.Active,
                 180,
-                project1.GetId()
+                project1.GetId(),
+                Priority.High
             );
 
             var task2 = new Task(
@@ -124,7 +129,8 @@ namespace ProjectMenager
                 project1.StartDate.AddDays(20),
                 StatusTask.Completed,
                 240,
-                project1.GetId()
+                project1.GetId(),
+                Priority.Medium
             );
 
             var task3 = new Task(
@@ -133,7 +139,8 @@ namespace ProjectMenager
                 project2.StartDate.AddDays(10),
                 StatusTask.Postponed,
                 120,
-                project2.GetId()
+                project2.GetId(),
+                Priority.High
             );
 
             var task4 = new Task(
@@ -142,7 +149,8 @@ namespace ProjectMenager
                 project2.StartDate.AddDays(40),
                 StatusTask.Active,
                 180,
-                project2.GetId()
+                project2.GetId(),
+                Priority.Low
             );
 
             var task5 = new Task(
@@ -151,7 +159,8 @@ namespace ProjectMenager
                 project3.StartDate.AddDays(30),
                 StatusTask.Active,
                 240,
-                project3.GetId()
+                project3.GetId(),
+                Priority.Medium
             );
 
             var task6 = new Task(
@@ -160,7 +169,8 @@ namespace ProjectMenager
                 project3.StartDate.AddDays(50),
                 StatusTask.Completed,
                 220,
-                project3.GetId()
+                project3.GetId(),
+                Priority.Low
             );
 
             var task7 = new Task(
@@ -169,7 +179,8 @@ namespace ProjectMenager
                 project4.StartDate.AddDays(10),
                 StatusTask.Active,
                 200,
-                project4.GetId()
+                project4.GetId(),
+                Priority.High
             );
 
             var task8 = new Task(
@@ -178,7 +189,8 @@ namespace ProjectMenager
                 project4.StartDate.AddDays(40),
                 StatusTask.Active,
                 240,
-                project4.GetId()
+                project4.GetId(),
+                Priority.Low
             );
 
             var task9 = new Task(
@@ -187,7 +199,8 @@ namespace ProjectMenager
                 project5.StartDate.AddDays(5),
                 StatusTask.Postponed,
                 180,
-                project5.GetId()
+                project5.GetId(),
+                Priority.High
             );
 
             var task10 = new Task(
@@ -196,7 +209,8 @@ namespace ProjectMenager
                 project5.StartDate.AddDays(30),
                 StatusTask.Active,
                 300,
-                project5.GetId()
+                project5.GetId(),
+                Priority.Medium
             );
 
             projectTasks.Add(project1, new List<Task> { task1, task2 });

@@ -11,7 +11,7 @@ namespace ProjectMenager.Classes
         public static Task ChooseTask(Dictionary<Project, List<Task>> projectTasks)
         {
             Task foundedTask = null;
-            do
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine("Popis svih zadataka...\n");
@@ -39,14 +39,14 @@ namespace ProjectMenager.Classes
                     continue;
                 }
                 break;
-            } while (true);
+            } 
             return foundedTask;
         }
         private static void DisplayTaskDetails(Task task)
         {
             Console.Clear();
             Console.WriteLine($"Naziv: {task.Name}\nOpis: {task.Description}\nRok: {task.DueDate.ToString("dd/MM/yyyy")}\n" +
-                    $"Status: {task.Status}\nOčekivano trajanje: {task.ExpectedDuration} min\nPridruženi projekt (ID): {task.AssociatedProjectId.ToString()}");
+                    $"Status: {task.Status}\nOčekivano trajanje: {task.ExpectedDuration} min\nPrioritet: {task.Priority}\nPridruženi projekt (ID): {task.AssociatedProjectId.ToString()}");
         }
         private static void CheckIfAllTasksCompleted(Dictionary<Project, List<Task>> projectTasks, Task task)
         {
@@ -69,7 +69,6 @@ namespace ProjectMenager.Classes
                 foundedProject.Status = ProjectStatus.Completed;
             }                               
         }
-
         private static void EditTaskStatus(Dictionary<Project, List<Task>> projectTasks,Task task)
         {
             Console.Clear();
@@ -117,6 +116,57 @@ namespace ProjectMenager.Classes
                 Console.ReadKey();
             }
         }
-    
+
+        //bonus taks
+        private static List<Task> GetListOfAllTasks(Dictionary<Project, List<Task>> projectTasks)
+        {
+            var tasksList = new List<Task>();
+            foreach (var tasks in projectTasks.Values)
+                tasksList.AddRange(tasks);
+            return tasksList;
+        }      
+        private static void SortTasksByPriority(Dictionary<Project, List<Task>> projectTasks)
+        {
+            Console.Clear();            
+            var tasksList = GetListOfAllTasks(projectTasks);
+            tasksList = tasksList.OrderBy(task => task.Priority).ToList();           
+            foreach (var task in tasksList)            
+                Console.WriteLine($"Naziv: {task.Name}\n\t- Opis: {task.Description} - Prioritet: {task.Priority}\n");            
+        }
+        private static void SortTasksByDuration(Dictionary<Project, List<Task>> projectTasks)
+        {
+            Console.Clear();
+            var tasksList = GetListOfAllTasks(projectTasks);
+            tasksList = tasksList.OrderBy(task => task.ExpectedDuration).ToList();
+            foreach (var task in tasksList)
+                Console.WriteLine($"Naziv: {task.Name}\n\t- Opis: {task.Description} - Prioritet: {task.ExpectedDuration} min\n");
+        }
+        public static void BonusMenu(Dictionary<Project, List<Task>> projectTasks)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Bonus zadaci: \n");
+                Console.WriteLine("1. Prikaz zadataka sortiranih od najkračeg do najduljeg\n2. Prikaz zadataka po prioritetu\n");
+                Console.Write("Odaberite opciju: ");
+                var choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        SortTasksByDuration(projectTasks);
+                        break;
+                    case "2":
+                        SortTasksByPriority(projectTasks);
+                        break;
+                    case "0":
+                        Console.WriteLine("Vraćate se na glavni izbornik...");
+                        return;
+                    default:
+                        break;
+                }
+                Console.ReadKey();
+            }
+        }
+
     }
 }

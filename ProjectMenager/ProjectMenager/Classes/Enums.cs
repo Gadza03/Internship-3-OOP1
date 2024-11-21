@@ -19,4 +19,10 @@ namespace ProjectMenager.Classes
         Completed,
         Postponed
     }
+    public enum Priority
+    {
+        High,
+        Medium,
+        Low
+    }
 }

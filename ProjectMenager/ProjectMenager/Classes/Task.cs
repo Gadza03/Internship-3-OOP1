@@ -15,7 +15,8 @@ namespace ProjectMenager.Classes
         public StatusTask Status { get; set; }
         public int ExpectedDuration { get; set; }
         public Guid AssociatedProjectId { get; set; }
-        public Task(string name, string description, DateTime dueDate, StatusTask status, int expectedDuration, Guid project)
+        public Priority Priority { get; set; }
+        public Task(string name, string description, DateTime dueDate, StatusTask status, int expectedDuration, Guid project, Priority priority)
         {
             this.Name = name;
             this.Description = description;
@@ -23,6 +24,7 @@ namespace ProjectMenager.Classes
             this.Status = status;
             this.ExpectedDuration = expectedDuration;
             this.AssociatedProjectId = project;
+            this.Priority = priority;
         }
 
     }
