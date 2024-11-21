@@ -48,7 +48,29 @@ namespace ProjectMenager.Classes
             Console.WriteLine($"Naziv: {task.Name}\nOpis: {task.Description}\nRok: {task.DueDate.ToString("dd/MM/yyyy")}\n" +
                     $"Status: {task.Status}\nOčekivano trajanje: {task.ExpectedDuration} min\nPridruženi projekt (ID): {task.AssociatedProjectId.ToString()}");
         }
-        private static void EditTaskStatus(Task task)
+        private static void CheckIfAllTasksCompleted(Dictionary<Project, List<Task>> projectTasks, Task task)
+        {
+            var projects = projectTasks.Keys;
+            Project foundedProject = null;
+            foreach (var project in projects)
+            {
+                if (project.GetId() == task.AssociatedProjectId)
+                    foundedProject = project;
+            }
+            if (foundedProject == null)
+            {
+                Console.WriteLine("Nismo pronasli odgovarajuci projekt za zadatak.");
+                return;
+            }
+            var areAllTasksCompleted = projectTasks[foundedProject].All(t => t.Status == StatusTask.Completed);
+            if (areAllTasksCompleted)
+            {
+                Console.WriteLine($"Svi zadaci u projektu {foundedProject.Name} su završeni, postavljamo i njega na completed.");
+                foundedProject.Status = ProjectStatus.Completed;
+            }                               
+        }
+
+        private static void EditTaskStatus(Dictionary<Project, List<Task>> projectTasks,Task task)
         {
             Console.Clear();
             StatusTask taskStatusOld = task.Status;
@@ -60,6 +82,7 @@ namespace ProjectMenager.Classes
             var status = ProjectLogic.GetValidTaskStatus();
             task.Status = status;
             Console.WriteLine($"Uspješno ste promjenili status zadatka sa {taskStatusOld} na {task.Status}");
+            CheckIfAllTasksCompleted(projectTasks, task);
 
         }
         public static void ManageSpecificTask(Dictionary<Project, List<Task>> projectTasks, Task task)
@@ -81,7 +104,7 @@ namespace ProjectMenager.Classes
                         DisplayTaskDetails(task);
                         break;
                     case "2":
-                        EditTaskStatus(task);
+                        EditTaskStatus(projectTasks, task);
                         break;
                     case "0":
                         Console.WriteLine("Vraćate se na glavni izbornik...");
