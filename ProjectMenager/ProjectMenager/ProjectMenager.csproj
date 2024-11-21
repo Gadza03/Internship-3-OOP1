@@ -47,6 +47,7 @@
     <Compile Include="Classes\Project.cs" />
     <Compile Include="Classes\ProjectLogic.cs" />
     <Compile Include="Classes\Task.cs" />
+    <Compile Include="Classes\TaskLogic.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

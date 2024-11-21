@@ -241,7 +241,7 @@ namespace ProjectMenager.Classes
             } while (!isValid);
             return name;
         }
-        private static StatusTask GetValidTaskStatus()
+        public static StatusTask GetValidTaskStatus()
         {
             StatusTask status;
             while (true)
@@ -295,9 +295,48 @@ namespace ProjectMenager.Classes
 
 
         }
+
         public static void DeleteTaskFromProject(Dictionary<Project, List<Task>> projectTasks, Project project)
         {
+            Task foundedTask;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine($"Lista zadataka za {project.Name}: ");
+                foreach (var task in projectTasks[project])
+                    Console.WriteLine($"- {task.Name}");
+                Console.Write("\nOdaberite koji zadatak želite: ");
+                var selectedTask = Console.ReadLine().Trim().ToLower();
+                foundedTask = projectTasks[project].FirstOrDefault(task => task.Name.ToLower() == selectedTask);
+                if (foundedTask == null)
+                {
+                    Console.WriteLine("Uneseni zadatak ne postoji. Molimo pokušajte ponovno");
+                    Console.ReadKey();
+                    continue;
+                }
+                break;
+            } while (true);
+            var confirmationToDelete = ConfirmationDialog();
+            if (confirmationToDelete)
+            {
+                projectTasks[project].Remove(foundedTask);
+                Console.WriteLine($"Uspjesno ste uklonili zadatak {foundedTask.Name} iz projekta {project.Name}.");
+            }
+            else
+                Console.WriteLine($"Prekinuto uklanjanje zadataka {foundedTask.Name} iz projekta {project.Name}.");
+        }
+        public static void DisplayActiveTasksTime(Dictionary<Project, List<Task>> projectTasks, Project project)
+        {
+            Console.Clear();
+            var activeTasksList = projectTasks[project].Where(task => task.Status == StatusTask.Active).ToList();
+            var sumOfDuration = 0;
+            foreach (var task in activeTasksList)            
+                sumOfDuration += task.ExpectedDuration;
 
+            if (sumOfDuration == 0)            
+                Console.WriteLine($"Projekt {project.Name} ne sadrži zadatke.");
+            else
+                Console.WriteLine($"Ukupno očekivano vrijeme potrebno za sve zadatke iznosi: {sumOfDuration} min");          
         }
         public static void ManageProject(Dictionary<Project, List<Task>> projectTasks, Project project)
         {
@@ -332,7 +371,7 @@ namespace ProjectMenager.Classes
                         DeleteTaskFromProject(projectTasks,project);
                         break;
                     case "6":
-                        //DisplayActiveTasksTime(project);
+                        DisplayActiveTasksTime(projectTasks,project);
                         break;
                     case "0":
                         Console.WriteLine("Vracate se korak nazad...");

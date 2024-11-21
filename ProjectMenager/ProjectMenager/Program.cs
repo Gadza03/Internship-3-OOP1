@@ -186,7 +186,8 @@ namespace ProjectMenager
                         ProjectLogic.ManageProject(projectTasks,selectedProject);
                         break;
                     case "7":
-                        //ManageSpecificTask(projectTasks);
+                        var selectedTask = TaskLogic.ChooseTask(projectTasks);
+                        TaskLogic.ManageSpecificTask(projectTasks, selectedTask);
                         break;
                     case "0":                                  
                         return;                        
