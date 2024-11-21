@@ -299,7 +299,7 @@ namespace ProjectMenager.Classes
         public static void DeleteTaskFromProject(Dictionary<Project, List<Task>> projectTasks, Project project)
         {
             Task foundedTask;
-            do
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine($"Lista zadataka za {project.Name}: ");
@@ -315,7 +315,7 @@ namespace ProjectMenager.Classes
                     continue;
                 }
                 break;
-            } while (true);
+            }
             var confirmationToDelete = ConfirmationDialog();
             if (confirmationToDelete)
             {

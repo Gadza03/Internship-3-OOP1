@@ -8,15 +8,74 @@ using Task = ProjectMenager.Classes.Task;
 namespace ProjectMenager
 {
     class Program
-    {
-        static void CreateProjectsAndTasks(Dictionary<Project, List<Task>> projectTasks) { 
-             var project1 = new Project(
-                "Website Redesign",
-                "Revamp the company's website to improve user experience and update branding.",
-                new DateTime(2024, 11, 20),
-                new DateTime(2025, 1, 15),
-                ProjectStatus.Active
-            );
+    {        
+        static void Main(string[] args)
+        {
+            Dictionary<Project, List<Task>> projectTasks = new Dictionary<Project, List<Task>>();
+            CreateProjectsAndTasks(projectTasks);
+            MainMenu(projectTasks);           
+            
+        }        
+        static void MainMenu(Dictionary<Project, List<Task>> projectTasks)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Glavni izbornik:");
+                Console.WriteLine("1. Ispis svih projekata s pripadajućim zadacima");
+                Console.WriteLine("2. Dodavanje novog projekta");
+                Console.WriteLine("3. Brisanje projekta");
+                Console.WriteLine("4. Prikaz zadataka koji su due u sljedećih 7 dana");
+                Console.WriteLine("5. Prikaz projekata filtriranih po statusu");
+                Console.WriteLine("6. Upravljanje određenim projektom");
+                Console.WriteLine("7. Upravljanje određenim zadatkom");
+                Console.WriteLine("0. Izlaz");
+
+                var choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        ProjectLogic.PrintProjectDetails(projectTasks);
+                        break;
+                    case "2":
+                        ProjectLogic.AddNewProject(projectTasks);
+                        break;
+                    case "3":
+                        ProjectLogic.DeleteProject(projectTasks);
+                        break;
+                    case "4":
+                        ProjectLogic.ShowTasksDueInNext7Days(projectTasks);
+                        break;
+                    case "5":
+                        ProjectLogic.FilterProjectsByStatus(projectTasks);
+                        break;
+                    case "6":
+                        var selectedProject = ProjectLogic.ChooseProject(projectTasks);
+                        ProjectLogic.ManageProject(projectTasks, selectedProject);
+                        break;
+                    case "7":
+                        var selectedTask = TaskLogic.ChooseTask(projectTasks);
+                        TaskLogic.ManageSpecificTask(projectTasks, selectedTask);
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Neispravan unos. Pokusajte ponovno!");
+                        break;
+                }
+                Console.ReadKey();
+            }
+        }
+        static void CreateProjectsAndTasks(Dictionary<Project, List<Task>> projectTasks)
+        {
+            var project1 = new Project(
+               "Website Redesign",
+               "Revamp the company's website to improve user experience and update branding.",
+               new DateTime(2024, 11, 22),
+               new DateTime(2025, 1, 15),
+               ProjectStatus.Active
+           );
 
             var project2 = new Project(
                 "Mobile App Development",
@@ -53,7 +112,7 @@ namespace ProjectMenager
             var task1 = new Task(
                 "Design Mockups",
                 "Create design mockups for the new website.",
-                project1.StartDate.AddDays(5), 
+                project1.StartDate.AddDays(5),
                 StatusTask.Active,
                 180,
                 project1.GetId()
@@ -71,7 +130,7 @@ namespace ProjectMenager
             var task3 = new Task(
                 "App UI",
                 "Design the UI for the mobile app.",
-                project2.StartDate.AddDays(10),  
+                project2.StartDate.AddDays(10),
                 StatusTask.Postponed,
                 120,
                 project2.GetId()
@@ -80,7 +139,7 @@ namespace ProjectMenager
             var task4 = new Task(
                 "API Integration",
                 "Integrate APIs for mobile app functionalities.",
-                project2.StartDate.AddDays(40), 
+                project2.StartDate.AddDays(40),
                 StatusTask.Active,
                 180,
                 project2.GetId()
@@ -98,7 +157,7 @@ namespace ProjectMenager
             var task6 = new Task(
                 "Firewall Setup",
                 "Setup and configure firewalls for enhanced security.",
-                project3.StartDate.AddDays(50),  
+                project3.StartDate.AddDays(50),
                 StatusTask.Completed,
                 220,
                 project3.GetId()
@@ -107,7 +166,7 @@ namespace ProjectMenager
             var task7 = new Task(
                 "AI Research",
                 "Conduct research on AI tools and technologies to integrate.",
-                project4.StartDate.AddDays(10),  
+                project4.StartDate.AddDays(10),
                 StatusTask.Active,
                 200,
                 project4.GetId()
@@ -116,7 +175,7 @@ namespace ProjectMenager
             var task8 = new Task(
                 "AI Integration Setup",
                 "Set up the environment for integrating AI tools into the system.",
-                project4.StartDate.AddDays(40), 
+                project4.StartDate.AddDays(40),
                 StatusTask.Active,
                 240,
                 project4.GetId()
@@ -138,7 +197,7 @@ namespace ProjectMenager
                 StatusTask.Active,
                 300,
                 project5.GetId()
-            ) ;
+            );
 
             projectTasks.Add(project1, new List<Task> { task1, task2 });
             projectTasks.Add(project2, new List<Task> { task3, task4 });
@@ -146,64 +205,6 @@ namespace ProjectMenager
             projectTasks.Add(project4, new List<Task> { task7, task8 });
             projectTasks.Add(project5, new List<Task> { task9, task10 });
 
-        }
-        static void MainMenu(Dictionary<Project, List<Task>> projectTasks)
-        {
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("Glavni izbornik:");
-                Console.WriteLine("1. Ispis svih projekata s pripadajućim zadacima");
-                Console.WriteLine("2. Dodavanje novog projekta");
-                Console.WriteLine("3. Brisanje projekta");
-                Console.WriteLine("4. Prikaz zadataka koji su due u sljedećih 7 dana");
-                Console.WriteLine("5. Prikaz projekata filtriranih po statusu");
-                Console.WriteLine("6. Upravljanje određenim projektom");
-                Console.WriteLine("7. Upravljanje određenim zadatkom");
-                Console.WriteLine("0. Izlaz");
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
-                {
-                    case "1":
-                        ProjectLogic.PrintProjectDetails(projectTasks);
-                        break;
-                    case "2":
-                        ProjectLogic.AddNewProject(projectTasks);
-                        break;
-                    case "3":
-                        ProjectLogic.DeleteProject(projectTasks);
-                        break;
-                    case "4":
-                        ProjectLogic.ShowTasksDueInNext7Days(projectTasks);
-                        break;
-                    case "5":
-                        ProjectLogic.FilterProjectsByStatus(projectTasks);
-                        break;
-                    case "6":
-                        var selectedProject = ProjectLogic.ChooseProject(projectTasks);
-                        ProjectLogic.ManageProject(projectTasks,selectedProject);
-                        break;
-                    case "7":
-                        var selectedTask = TaskLogic.ChooseTask(projectTasks);
-                        TaskLogic.ManageSpecificTask(projectTasks, selectedTask);
-                        break;
-                    case "0":                                  
-                        return;                        
-                    default:
-                        Console.WriteLine("Neispravan unos. Pokusajte ponovno!");
-                        break;
-                }
-                Console.ReadKey();
-            } while (true);
-        }
-        static void Main(string[] args)
-        {
-            Dictionary<Project, List<Task>> projectTasks = new Dictionary<Project, List<Task>>();
-            CreateProjectsAndTasks(projectTasks);
-            MainMenu(projectTasks);           
-            
         }
     }
 }

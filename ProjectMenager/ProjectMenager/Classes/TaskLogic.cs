@@ -87,7 +87,7 @@ namespace ProjectMenager.Classes
         }
         public static void ManageSpecificTask(Dictionary<Project, List<Task>> projectTasks, Task task)
         {
-            do
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine($"Upravljanje zadatkom: {task.Name}\n");
@@ -115,7 +115,7 @@ namespace ProjectMenager.Classes
                 }
 
                 Console.ReadKey();
-            } while (true);
+            }
         }
     
     }
